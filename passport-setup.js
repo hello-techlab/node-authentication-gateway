@@ -5,6 +5,7 @@ passport.serializeUser(function(user, done) {
   console.log('serialize');
   //Use just the id to make the cookie small
   //I think this is to save the user/user.id on request object
+  console.log(user);
   done(null, user);
 });
 

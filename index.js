@@ -23,45 +23,100 @@ app.use(cookieSession({
   name: 'techlab-session',
   keys: ['key1', 'key2']
 }));
-
 app.use(passport.initialize());
 app.use(passport.session());
 
-// ===========================================
+//Routes
+const authRoutes = require('./authentication');
+
+//Auth routes
+app.use('/auth', authRoutes);
+
+// ============================= Gateway ============================= 
+
+// ===== Tests =====
 const apiQqrProxy = httpProxy('http://localhost:8080');
 app.get('/test/clientes', (req, res, next) => {
   apiQqrProxy(req, res, next);
 });
 
 app.post('/test', verifyJWT, (req, res, next) => {
+  console.log('aqui foi')
   apiQqrProxy(req, res, next);
 });
 
 app.get('/clientes', verifyJWT, (req, res, next) => { 
-  //Aqui mandarei a requisição para o serviço que for necessário com o id do cliente que obtenho de req.UserId
-
-
-  console.log("Retornou todos clientes!");
   res.json([{id:req.userId, nome:'Nicolau'}]);
 }); 
 
-// ===========================================
-// Essa glr de baixo vai para outro arquivo
-
-app.post('/login', (req, res, next) => {
-  //esse teste abaixo deve ser feito no seu banco de dados
-  console.log('ok');
-  if(req.body.user === 'nic' && req.body.pwd === '123'){
-    //auth ok
-    const id = 1; //esse id viria do banco de dados
-    const token = jwt.sign({ id }, process.env.SECRET, {
-      expiresIn: 60*60 // expires in 1h
-    })
-    return res.json({ auth: true, token }); //Você retorna para usar manualmente, mas não salva em cookie
-  }
-  
-  res.status(500).json({message: 'Login inválido!'});
+// ===== Serviço questionários =====
+const svcQuestionariosProxy = httpProxy('http://servico_questionarios:49160');
+app.get('/questionarios/lista', verifyJWT, (req, res, next) => {
+  svcQuestionariosProxy(req, res, next);
 });
+app.post('/questionarios', verifyJWT, (req, res, next) => {
+  svcQuestionariosProxy(req, res, next);
+});
+
+app.put('/questoes', verifyJWT, (req, res, next) => {
+  svcQuestionariosProxy(req, res, next);
+});
+app.post('/questoes', verifyJWT, (req, res, next) => {
+  svcQuestionariosProxy(req, res, next);
+});
+
+app.post('/questionarios/:name/begin', verifyJWT, (req, res, next) => {
+  svcQuestionariosProxy(req, res, next);
+});
+app.put('/questionarios/:name/:session_id/proxima', verifyJWT, (req, res, next) => {
+  svcQuestionariosProxy(req, res, next);
+});
+
+// ===== Serviço email =====
+const svcEmailProxy = httpProxy('http://servico_email:49161');
+app.post('/email/relatorio/enviar', verifyJWT, (req, res, next) => {
+  svcEmailProxy(req, res, next);
+});
+
+// ===== Serviço usuários =====
+// /usuarios
+const svcUsuariosProxy = httpProxy('http://servico_usuario:3000');
+app.get('/usuarios/gapsi', verifyJWT, (req, res, next) => {
+  svcUsuariosProxy(req, res, next);
+});
+
+app.post('/usuarios/gapsi', verifyJWT, (req, res, next) => {
+  svcUsuariosProxy(req, res, next);
+});
+
+app.put('/usuarios/gapsi/:emailatendente', verifyJWT, (req, res, next) => {
+  svcUsuariosProxy(req, res, next);
+});
+
+app.delete('/usuarios/gapsi/:emailatendente', verifyJWT, (req, res, next) => {
+  svcUsuariosProxy(req, res, next);
+});
+
+app.get('/usuarios/aluno', verifyJWT, (req, res, next) => {
+  svcUsuariosProxy(req, res, next);
+});
+
+app.post('/usuarios/aluno', verifyJWT, (req, res, next) => {
+  svcUsuariosProxy(req, res, next);
+});
+
+app.put('/usuarios/gapsi/:nuspusuario', verifyJWT, (req, res, next) => {
+  svcUsuariosProxy(req, res, next);
+});
+
+app.delete('/usuarios/gapsi/:nuspusuario', verifyJWT, (req, res, next) => {
+  svcUsuariosProxy(req, res, next);
+});
+
+
+// ============================= Server ============================= 
+const PORT = 3000;
+app.listen(PORT, () => console.log(`Listening on http://localhost:${PORT}`));
 
 function verifyJWT(req, res, next) {
   const token = req.headers['x-access-token'];
@@ -75,37 +130,3 @@ function verifyJWT(req, res, next) {
     next();
   })  
 }
-// ===========================================
-
-app.get('/auth/failed', (req, res) => {
-  res.send('You failed to authenticate');
-});
-
-app.get('/auth/google',
-  passport.authenticate('google', { scope: ['profile', 'email'] })
-);
-
-app.get('/auth/google/callback', 
-  passport.authenticate('google', { failureRedirect: '/failed' }),
-  function(req, res) {
-    //Somente retornaremos o jwt para o front, o front deverá armazenar isso e enviar nas próximas requisições
-    res.redirect('/auth/generatejwt');
-  }
-);
-
-app.get('/auth/generatejwt', (req, res, next) => {
-  const token = jwt.sign({ id: req.user.id }, process.env.SECRET, {
-    expiresIn: 60*5 // expires in 5min
-  });
-  //console.log(`Welcome, Mr ${req.user.displayName} of email: ${req.user._json.email} of domain ${req.user._json.hd} and id:${req.user.id}. Your token is: ${token}`);
-  res.status(200).json({auth: true, jwt: token, message: 'Use this token on next requests to identify which user is requesting'});
-});
-
-app.get('/auth/logout', (req, res) => {
-  req.session = null; //Destroy the session
-  req.logout();
-  res.json({ auth: false, token: null });
-});
-
-const PORT = 3000;
-app.listen(PORT, () => console.log(`Listening on http://localhost:${PORT}`));
