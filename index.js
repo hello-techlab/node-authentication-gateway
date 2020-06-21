@@ -50,7 +50,7 @@ app.get('/clientes', verifyJWT, (req, res, next) => {
 }); 
 
 // ===== Serviço questionários =====
-const svcQuestionariosProxy = httpProxy('http://servico_questionarios:49160');
+const svcQuestionariosProxy = httpProxy('http://servico_questionarios:8080');
 app.get('/questionarios/lista', verifyJWT, (req, res, next) => {
   svcQuestionariosProxy(req, res, next);
 });
@@ -73,14 +73,14 @@ app.put('/questionarios/:name/:session_id/proxima', verifyJWT, (req, res, next) 
 });
 
 // ===== Serviço email =====
-const svcEmailProxy = httpProxy('http://servico_email:49161');
+const svcEmailProxy = httpProxy('http://servico_email:8080');
 app.post('/email/relatorio/enviar', verifyJWT, (req, res, next) => {
   svcEmailProxy(req, res, next);
 });
 
 // ===== Serviço usuários =====
 // /usuarios
-const svcUsuariosProxy = httpProxy('http://servico_usuario:3000');
+const svcUsuariosProxy = httpProxy('http://servico_usuario:8080');
 app.get('/usuarios/gapsi', verifyJWT, (req, res, next) => {
   svcUsuariosProxy(req, res, next);
 });
@@ -115,7 +115,7 @@ app.delete('/usuarios/gapsi/:nuspusuario', verifyJWT, (req, res, next) => {
 
 
 // ============================= Server ============================= 
-const PORT = 3000;
+const PORT = process.env.port | 8080;
 app.listen(PORT, () => console.log(`Listening on http://localhost:${PORT}`));
 
 function verifyJWT(req, res, next) {

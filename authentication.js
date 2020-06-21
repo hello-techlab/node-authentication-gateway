@@ -21,7 +21,7 @@ authRouter.get('/google/callback',
 
 authRouter.get('/generatejwt', (req, res, next) => {
   const token = jwt.sign({ id: req.user.id }, process.env.SECRET, {
-    expiresIn: 60*5 // expires in 5min
+    expiresIn: 60*60*24 // expires in 1 day
   });
   //console.log(`Welcome, Mr ${req.user.displayName} of email: ${req.user._json.email} of domain ${req.user._json.hd} and id:${req.user.id}. Your token is: ${token}`);
   res.status(200).json({auth: true, jwt: token, message: 'Use this token on next requests to identify which user is requesting'});

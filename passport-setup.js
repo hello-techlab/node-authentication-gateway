@@ -20,7 +20,10 @@ passport.deserializeUser(function(user, done) {
 passport.use(new GoogleStrategy({
     clientID: "1059970612750-69c6kp70e9drthvvtd0r94od8ghphr1o.apps.googleusercontent.com",
     clientSecret: "cr1CMX3wSk6n5aduExkc1j6u",
-    callbackURL: "http://localhost:3000/auth/google/callback"
+    callbackURL: `http://techlab-oauth.mooo.com/auth/google/callback`
+    //Essa url vai trocar, sai localhost e entra o ip
+    //E é preciso trocar lá no usuário gapsi, o callback da aplicação tambem pro ip
+
   },
   function(acessToken, refreshToken, profile, done) {
     console.log('passport use');
