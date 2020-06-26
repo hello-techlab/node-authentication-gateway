@@ -1,3 +1,7 @@
 node_modules/
 .env
 .env.examplef
+<<<<<<< HEAD
+=======
+deploy.sh
+>>>>>>> b0593ffac3da36d65a9413cdb98b349aed2990a8

@@ -5,7 +5,7 @@ const passport = require('passport');
 const authRouter = express.Router();
 
 authRouter.get('/failed', (req, res) => {
-  res.send('You failed to authenticate. You do not have an USP email :(');
+  res.send(401).json({message: 'You failed to authenticate. You do not have an USP email :('});
 });
 
 authRouter.get('/login',
@@ -57,7 +57,7 @@ authRouter.get('/generatejwt', (req, res, next) => {
 
   // res.status(200).json({auth: true, jwt: token, message: 'Use this token on next requests to identify which user is requesting'});
   res.redirect(url.format({
-    pathname:"/",
+    pathname:"/web",
     query: {
        "auth": true,
        "token": token,
