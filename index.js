@@ -71,7 +71,7 @@ app.post('/questoes', verifyJWT, (req, res, next) => {
 app.post('/questionarios/:name/begin', verifyJWT, (req, res, next) => {
   svcQuestionariosProxy(req, res, next);
 });
-app.put('/questionarios/:name/:session_id/proxima', verifyJWT, (req, res, next) => {
+app.post('/questionarios/:name/:session_id/proxima', verifyJWT, (req, res, next) => {
   svcQuestionariosProxy(req, res, next);
 });
 
