@@ -51,6 +51,9 @@ app.get('/clientes', verifyJWT, (req, res, next) => {
 
 // ===== Serviço questionários =====
 const svcQuestionariosProxy = httpProxy('http://servico_questionarios:8080');
+app.get('/questionarios', verifyJWT, (req, res, next) => {
+  svcQuestionariosProxy(req, res, next);
+});
 app.get('/questionarios/lista', verifyJWT, (req, res, next) => {
   svcQuestionariosProxy(req, res, next);
 });
@@ -121,13 +124,13 @@ app.listen(PORT, () => console.log(`Listening on http://localhost:${PORT}`));
 async function verifyJWT(req, res, next) {
   const token = req.headers['x-access-token'];
 
-  // if (!token) return res.status(401).json({ auth: false, message: 'No token provided.'});
-  if (!token) res.redirect('/auth/login');
+  if (!token) return res.status(401).json({ auth: false, message: 'No token provided.'});
+  // if (!token) res.redirect('/auth/login');
 
   jwt.verify(token, process.env.SECRET, (err, decoded) => {
 
-    // if (err) return res.status(401).json({ auth: false, message: 'Failed to authenticate token.'});
-    if (err) res.redirect('/auth/login');
+    if (err) return res.status(401).json({ auth: false, message: 'Failed to authenticate token.'});
+    // if (err) res.redirect('/auth/login');
 
     //Se tudo estiver ok, salvar dados na request para uso posterior em outros serviços
     req.userId = decoded.id;
