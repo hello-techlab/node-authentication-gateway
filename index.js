@@ -1,6 +1,3 @@
-// VOCÊ FARÁ ASSIM: NGINX --> API-GATEWAY(NODE) --> SERVIÇO DESEJADO
-// Pegue desse tutorial como fazer o gateway em nodejs: https://www.luiztools.com.br/post/api-gateway-em-arquitetura-de-microservices-com-node-js/
-// A api gateway que fará a autenticação e autorização (verificação da identidade do request), então será nesse serviço MediaStreamAudioSourceNode, usando o google strategy
 require('dotenv-safe').config();
 const jwt = require('jsonwebtoken');
 const express = require('express');
@@ -13,6 +10,8 @@ var httpProxy = require('express-http-proxy');
 const cookieSession = require('cookie-session');
 const cookieParser = require('cookie-parser');
 require('./passport-setup');
+
+const tokenVerification = require('./token-verification');
 
 app.use(helmet()); //Camada de proteção para requisições maliciosas
 app.use(cors());
@@ -40,79 +39,79 @@ app.get('/test/clientes', (req, res, next) => {
   apiQqrProxy(req, res, next);
 });
 
-app.post('/test', verifyJWT, (req, res, next) => {
+app.post('/test', tokenVerification.verifyJWT, (req, res, next) => {
   console.log('aqui foi')
   apiQqrProxy(req, res, next);
 });
 
-app.get('/clientes', verifyJWT, (req, res, next) => { 
-  res.json([{id:req.userId, nome:'Nicolau'}]);
+app.get('/clientes', tokenVerification.verifyJWT, tokenVerification.verifySuperUser, (req, res, next) => { 
+  res.json([{id:req.userId, nome:req.userName}]);
 }); 
 
 // ===== Serviço questionários =====
 const svcQuestionariosProxy = httpProxy('http://servico_questionarios:8080');
-app.get('/questionarios', verifyJWT, (req, res, next) => {
+app.get('/questionarios', tokenVerification.verifyJWT, (req, res, next) => {
   svcQuestionariosProxy(req, res, next);
 });
-app.get('/questionarios/lista', verifyJWT, (req, res, next) => {
+app.get('/questionarios/lista', tokenVerification.verifyJWT, (req, res, next) => {
   svcQuestionariosProxy(req, res, next);
 });
-app.post('/questionarios', verifyJWT, (req, res, next) => {
-  svcQuestionariosProxy(req, res, next);
-});
-
-app.put('/questoes', verifyJWT, (req, res, next) => {
-  svcQuestionariosProxy(req, res, next);
-});
-app.post('/questoes', verifyJWT, (req, res, next) => {
+app.post('/questionarios', tokenVerification.verifyJWT, (req, res, next) => {
   svcQuestionariosProxy(req, res, next);
 });
 
-app.post('/questionarios/:name/begin', verifyJWT, (req, res, next) => {
+app.put('/questoes', tokenVerification.verifyJWT, (req, res, next) => {
   svcQuestionariosProxy(req, res, next);
 });
-app.post('/questionarios/:name/:session_id/proxima', verifyJWT, (req, res, next) => {
+app.post('/questoes', tokenVerification.verifyJWT, (req, res, next) => {
+  svcQuestionariosProxy(req, res, next);
+});
+
+app.post('/questionarios/:name/begin', tokenVerification.verifyJWT, (req, res, next) => {
+  svcQuestionariosProxy(req, res, next);
+});
+app.post('/questionarios/:name/:session_id/proxima', tokenVerification.verifyJWT, (req, res, next) => {
   svcQuestionariosProxy(req, res, next);
 });
 
 // ===== Serviço email =====
 const svcEmailProxy = httpProxy('http://servico_email:8080');
-app.post('/email/relatorio/enviar', verifyJWT, (req, res, next) => {
+app.post('/email/relatorio/enviar', tokenVerification.verifyJWT, (req, res, next) => {
   svcEmailProxy(req, res, next);
 });
 
 // ===== Serviço usuários =====
 // /usuarios
 const svcUsuariosProxy = httpProxy('http://servico_usuario:8080');
-app.get('/usuarios/gapsi', verifyJWT, (req, res, next) => {
+app.get('/usuarios/gapsi', tokenVerification.verifyJWT, (req, res, next) => {
   svcUsuariosProxy(req, res, next);
 });
 
-app.post('/usuarios/gapsi', verifyJWT, (req, res, next) => {
+app.post('/usuarios/gapsi', tokenVerification.verifyJWT, (req, res, next) => {
   svcUsuariosProxy(req, res, next);
 });
 
-app.put('/usuarios/gapsi/:emailatendente', verifyJWT, (req, res, next) => {
+app.put('/usuarios/gapsi/:emailatendente', tokenVerification.verifyJWT, (req, res, next) => {
   svcUsuariosProxy(req, res, next);
 });
 
-app.delete('/usuarios/gapsi/:emailatendente', verifyJWT, (req, res, next) => {
+app.delete('/usuarios/gapsi/:emailatendente', tokenVerification.verifyJWT, (req, res, next) => {
   svcUsuariosProxy(req, res, next);
 });
 
-app.get('/usuarios/aluno', verifyJWT, (req, res, next) => {
+app.get('/usuarios/aluno', tokenVerification.verifyJWT, (req, res, next) => {
   svcUsuariosProxy(req, res, next);
 });
 
-app.post('/usuarios/aluno', verifyJWT, (req, res, next) => {
+app.post('/usuarios/aluno', tokenVerification.verifyJWT, (req, res, next) => {
   svcUsuariosProxy(req, res, next);
 });
 
-app.put('/usuarios/gapsi/:nuspusuario', verifyJWT, (req, res, next) => {
+app.put('/usuarios/gapsi/:nuspusuario', tokenVerification.verifyJWT, (req, res, next) => {
   svcUsuariosProxy(req, res, next);
 });
 
-app.delete('/usuarios/gapsi/:nuspusuario', verifyJWT, (req, res, next) => {
+app.delete('/usuarios/gapsi/:nuspusuario', tokenVerification.verifyJWT, (req, res, next) => {
   svcUsuariosProxy(req, res, next);
 });
 
@@ -120,28 +119,3 @@ app.delete('/usuarios/gapsi/:nuspusuario', verifyJWT, (req, res, next) => {
 // ============================= Server ============================= 
 const PORT = process.env.port | 8080;
 app.listen(PORT, () => console.log(`Listening on http://localhost:${PORT}`));
-
-async function verifyJWT(req, res, next) {
-  const token = req.headers['x-access-token'];
-
-  if (!token) return res.status(401).json({ auth: false, message: 'No token provided.'});
-  // if (!token) res.redirect('/auth/login');
-
-  jwt.verify(token, process.env.SECRET, (err, decoded) => {
-
-    if (err) return res.status(401).json({ auth: false, message: 'Failed to authenticate token.'});
-    // if (err) res.redirect('/auth/login');
-
-    //Se tudo estiver ok, salvar dados na request para uso posterior em outros serviços
-    req.userId = decoded.id;
-    req.userName = decoded.name;
-    req.userEmail = decoded.email;
-    req.hostDomain = decoded.hd;
-
-    //Se não for um email usp rejeitaremos
-    if (req.hostDomain !== 'usp.br') res.redirect('/auth/failed');
-
-    console.log(decoded);
-    next();
-  });  
-}
