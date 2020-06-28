@@ -70,7 +70,7 @@ app.post('/questoes', tokenVerification.verifyJWT, (req, res, next) => {
 app.post('/questionarios/:name/begin', tokenVerification.verifyJWT, (req, res, next) => {
   svcQuestionariosProxy(req, res, next);
 });
-app.post('/questionarios/:name/:session_id/proxima', tokenVerification.verifyJWT, (req, res, next) => {
+app.put('/questionarios/:name/:session_id/proxima', tokenVerification.verifyJWT, (req, res, next) => {
   svcQuestionariosProxy(req, res, next);
 });
 
