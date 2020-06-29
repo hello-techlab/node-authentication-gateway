@@ -57,7 +57,7 @@ authRouter.get('/generatejwt', (req, res, next) => {
 
   // res.status(200).json({auth: true, jwt: token, message: 'Use this token on next requests to identify which user is requesting'});
   res.redirect(url.format({
-    pathname:"/web",
+    pathname:"/LoginPage",
     query: {
        "auth": true,
        "token": token,
