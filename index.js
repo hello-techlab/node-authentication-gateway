@@ -44,7 +44,7 @@ app.post('/test', tokenVerification.verifyJWT, (req, res, next) => {
   apiQqrProxy(req, res, next);
 });
 
-app.get('/clientes', tokenVerification.verifyJWT, tokenVerification.verifySuperUser, (req, res, next) => { 
+app.get('/clientes', tokenVerification.verifyJWT, (req, res, next) => { 
   res.json([{id:req.userId, nome:req.userName}]);
 }); 
 
@@ -82,7 +82,10 @@ app.post('/email/relatorio/enviar', tokenVerification.verifyJWT, (req, res, next
 
 // ===== Serviço usuários =====
 // /usuarios
-const svcUsuariosProxy = httpProxy('http://servico_usuario:8080');
+// const svcUsuariosProxy = httpProxy('http://servico_usuario:8080');
+const svcUsuariosProxy = httpProxy('http://localhost:3000');
+
+// ========= GAPSI ========
 app.get('/usuarios/gapsi', tokenVerification.verifyJWT, (req, res, next) => {
   svcUsuariosProxy(req, res, next);
 });
@@ -99,7 +102,13 @@ app.delete('/usuarios/gapsi/:emailatendente', tokenVerification.verifyJWT, (req,
   svcUsuariosProxy(req, res, next);
 });
 
+// ========= ALUNO ========
+
 app.get('/usuarios/aluno', tokenVerification.verifyJWT, (req, res, next) => {
+  svcUsuariosProxy(req, res, next);
+});
+
+app.get('/usuarios/aluno/:idusuario', tokenVerification.verifyJWT, (req, res, next) => {
   svcUsuariosProxy(req, res, next);
 });
 
@@ -107,11 +116,12 @@ app.post('/usuarios/aluno', tokenVerification.verifyJWT, (req, res, next) => {
   svcUsuariosProxy(req, res, next);
 });
 
-app.put('/usuarios/gapsi/:nuspusuario', tokenVerification.verifyJWT, (req, res, next) => {
+app.put('/usuarios/aluno/:idusuario', tokenVerification.verifyJWT, (req, res, next) => {
+  console.log('uai');
   svcUsuariosProxy(req, res, next);
 });
 
-app.delete('/usuarios/gapsi/:nuspusuario', tokenVerification.verifyJWT, (req, res, next) => {
+app.delete('/usuarios/aluno/:idusuario', tokenVerification.verifyJWT, (req, res, next) => {
   svcUsuariosProxy(req, res, next);
 });
 

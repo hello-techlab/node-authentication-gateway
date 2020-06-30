@@ -2,18 +2,11 @@ const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 passport.serializeUser(function(user, done) {
-  console.log('serialize');
-  //I think this is to save the user/user.id on request object
-  console.log(user);
   done(null, user);
 });
 
 passport.deserializeUser(function(user, done) {
-  console.log('deserialize');
-  //Here the DB function to find the user
-  // User.findById(id, function(err, user) {
     done(null, user);
-  // });
 });
 
 passport.use(new GoogleStrategy({
@@ -23,12 +16,6 @@ passport.use(new GoogleStrategy({
     // callbackURL: "http://localhost:8080/auth/google/callback" //For tests
   },
   function(acessToken, refreshToken, profile, done) {
-    console.log('passport use');
-    //Usar o BD para achar ou criar um user
-    // profile.findOrCreate({ googleId: profile.id, }), function(err, profile) {
-      //Use the profile info to check if this user is regitered in my db. You can use the id
-      return done(null, profile);
-      // return done(null, profile);
-    // }
+    return done(null, profile);
   }
 ));
