@@ -16,7 +16,7 @@ async function verifyJWT(req, res, next) {
     req.body.hostDomain = decoded.hd;
 
     //Se não for um email usp rejeitaremos
-    if (req.hostDomain !== 'usp.br') res.redirect('/auth/failed');
+    if (req.body.hostDomain !== 'usp.br') res.redirect('/auth/failed');
 
     // console.log(decoded);
     next();

@@ -6,7 +6,7 @@ const authRouter = express.Router();
 const axios = require('axios');
 
 authRouter.get('/failed', (req, res) => {
-  res.send(401).json({message: 'You failed to authenticate. You do not have an USP email :('});
+  res.sendStatus(401).json({message: 'You failed to authenticate. You do not have an USP email :('});
 });
 
 authRouter.get('/login',
@@ -48,6 +48,7 @@ authRouter.get('/google/callback',
   passport.authenticate('google', { failureRedirect: '/auth/failed' }),
   function(req, res) {
     
+    console.log(req, res, 'google')
     //Se o domínio não for USP, rejeitaremos a requisição de login
     if (req.user._json.hd !== 'usp.br') res.redirect('/auth/failed');
 
@@ -80,7 +81,7 @@ authRouter.get('/generatejwt', (req, res, next) => {
 
       //Retornaremos o jwt para o front, o front deverá armazenar isso e enviar nas próximas requisições
       res.redirect(url.format({
-        pathname:"/LoginPage",
+        pathname:"/loginpage",
         query: {
             "auth": true,
             "token": token,
