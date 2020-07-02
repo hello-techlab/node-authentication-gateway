@@ -16,7 +16,7 @@ authRouter.get('/login',
 );
 
 authRouter.get('/info', tokenVerification.verifyJWT, (req, res, next) => {
-  res.sendStatus(200).json({
+  res.status(200).json({
     id: req.body.userId,
     name: req.body.userName,
     email: req.body.userEmail,
