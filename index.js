@@ -82,8 +82,8 @@ app.post('/email/relatorio/enviar', tokenVerification.verifyJWT, (req, res, next
 
 // ===== Serviço usuários =====
 // /usuarios
-// const svcUsuariosProxy = httpProxy('http://servico_usuario:8080');
-const svcUsuariosProxy = httpProxy('http://localhost:3000');
+const svcUsuariosProxy = httpProxy('http://servico_usuario:8080');
+// const svcUsuariosProxy = httpProxy('http://localhost:3000');
 
 // ========= GAPSI ========
 app.get('/usuarios/gapsi', tokenVerification.verifyJWT, (req, res, next) => {
@@ -117,7 +117,6 @@ app.post('/usuarios/aluno', tokenVerification.verifyJWT, (req, res, next) => {
 });
 
 app.put('/usuarios/aluno/:idusuario', tokenVerification.verifyJWT, (req, res, next) => {
-  console.log('uai');
   svcUsuariosProxy(req, res, next);
 });
 
@@ -125,6 +124,33 @@ app.delete('/usuarios/aluno/:idusuario', tokenVerification.verifyJWT, (req, res,
   svcUsuariosProxy(req, res, next);
 });
 
+// ========= AGENDAMENTO ========
+
+const svcAgendamentosProxy = httpProxy('http://servico_agendamento:8080');
+
+app.get('/acolhimento/eventos/:instituto', tokenVerification.verifyJWT, (req, res, next) => {
+  svcAgendamentosProxy(req, res, next);
+});
+
+app.put('/acolhimento/eventos/:instituto/:idevento', tokenVerification.verifyJWT, (req, res, next) => {
+  svcAgendamentosProxy(req, res, next);
+});
+
+app.post('/acolhimento/eventos/:instituto', tokenVerification.verifyJWT, (req, res, next) => {
+  svcAgendamentosProxy(req, res, next);
+});
+
+app.post('/acolhimento/token/:instituto', tokenVerification.verifyJWT, (req, res, next) => {
+  svcAgendamentosProxy(req, res, next);
+});
+
+app.put('/acolhimento/token/:instituto', tokenVerification.verifyJWT, (req, res, next) => {
+  svcAgendamentosProxy(req, res, next);
+});
+
+app.delete('/acolhimento/token/:instituto', tokenVerification.verifyJWT, (req, res, next) => {
+  svcAgendamentosProxy(req, res, next);
+});
 
 // ============================= Server ============================= 
 const PORT = process.env.port | 8080;
