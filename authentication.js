@@ -5,6 +5,8 @@ const passport = require('passport');
 const authRouter = express.Router();
 const axios = require('axios');
 
+const tokenVerification = require('./token-verification');
+
 authRouter.get('/failed', (req, res) => {
   res.sendStatus(401).json({message: 'You failed to authenticate. You do not have an USP email :('});
 });
@@ -12,6 +14,14 @@ authRouter.get('/failed', (req, res) => {
 authRouter.get('/login',
   passport.authenticate('google', { scope: ['profile', 'email'] })
 );
+
+authRouter.get('/info', tokenVerification.verifyJWT, (req, res, next) => {
+  res.sendStatus(200).json({
+    id: req.body.userId,
+    name: req.body.userName,
+    email: req.body.userEmail,
+  })
+});
 
 // authRouter.get('/signup', (req, res, next) => {
 //   res.send('Aqui teremos a página de cadastro dos dados, perguntaremos o instituto e o número usp da pessoa. Essa página só aparecerá no primeiro login');
