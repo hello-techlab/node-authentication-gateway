@@ -75,6 +75,9 @@ authRouter.get('/generatejwt', (req, res, next) => {
     //   responseType: 'json'
     // });
 
+
+    // retorna um 404 - not found
+
     // if (response.data.error) {
     //   res.status(200).json({ auth: true, token: token, message: 'This user is not registered on our database. We need to ask him Nusp and Institute'});
     // } else {

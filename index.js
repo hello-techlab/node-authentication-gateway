@@ -33,21 +33,6 @@ app.use('/auth', authRoutes);
 
 // ============================= Gateway ============================= 
 
-// ===== Tests =====
-const apiQqrProxy = httpProxy('http://localhost:8080');
-app.get('/test/clientes', (req, res, next) => {
-  apiQqrProxy(req, res, next);
-});
-
-app.post('/test', tokenVerification.verifyJWT, (req, res, next) => {
-  console.log('aqui foi')
-  apiQqrProxy(req, res, next);
-});
-
-app.get('/clientes', tokenVerification.verifyJWT, (req, res, next) => { 
-  res.json([{id:req.userId, nome:req.userName}]);
-}); 
-
 // ===== Serviço questionários =====
 const svcQuestionariosProxy = httpProxy('http://servico_questionarios:8080');
 app.get('/questionarios', tokenVerification.verifyJWT, (req, res, next) => {

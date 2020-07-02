@@ -24,8 +24,13 @@ async function verifyJWT(req, res, next) {
 }
 
 async function verifySuperUser(req, res, next) {
-  //Aqui chamamaos a função para verificar se é super usuário baseado no ID
-  let isSuperUser = false; //Por enquanto
+  const response = await axios({
+    method: 'get',
+    url: `http://servico_usuarios:8080/usuarios/aluno/${req.user.id}`,
+    responseType: 'json'
+  });
+
+  let isSuperUser = response.data.nivelacesso; 
 
   if (isSuperUser) {
     next();
