@@ -9,6 +9,8 @@ async function verifyJWT(req, res, next) {
 
     if (err) return res.status(401).json({ auth: false, message: 'Failed to authenticate token.'});
 
+    console.log('\n\n\n=================================Dentro de verifyJWT', decoded);
+
     //Se tudo estiver ok, salvar dados na request para uso posterior em outros serviços
     req.body.userId = decoded.id;
     req.body.userName = decoded.name;

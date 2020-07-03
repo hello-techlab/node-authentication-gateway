@@ -65,14 +65,17 @@ authRouter.get('/google/callback',
     // if (domain == undefined || domain.substr(domain.length - 6) !== 'usp.br') res.redirect('/auth/failed');
 
     // Gerar um token para as futuras requisições
-    console.log('======================= req ========================', req, '\n\n\n\n\n\n\n\n\n\n\n\n\n\n');
-    console.log('======================= req.user ========================', req.user);
+    // console.log('======================= req ========================', req, '\n\n\n\n\n\n\n\n\n\n\n\n\n\n');
+    // console.log('======================= req.user ========================', req.user);
+    
+    console.log('\n\n\n=================================Dentro do callback indo pra /auth/generatejwt', req.user);
+    
     res.redirect('/auth/generatejwt');
   }
 );
 
 authRouter.get('/generatejwt', (req, res, next) => {
-  // console.log('====== generatejwt - req.user -->', req.user);
+  console.log('\n\n\n=================================Dentro do generatejwt indo indo fazer o token', req.user);
 
   const token = jwt.sign({ 
     id: req.user._json.sub,
@@ -97,6 +100,8 @@ authRouter.get('/generatejwt', (req, res, next) => {
     // if (response.data.error) {
     //   res.status(200).json({ auth: true, token: token, message: 'This user is not registered on our database. We need to ask him Nusp and Institute'});
     // } else {
+
+      console.log('\n\n\n=================================Token feito, indo redirecionar para /loginpage', req.user);
 
       //Retornaremos o jwt para o front, o front deverá armazenar isso e enviar nas próximas requisições
       res.redirect(url.format({
