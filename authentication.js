@@ -59,10 +59,10 @@ authRouter.get('/google/callback',
   function(req, res) {
     
     //Se os últimos 6 caracteres não forem usp.br
-    let domain = req.user._json.hd;
-    console.log('======== Callback --> Domain: ', domain);
-    console.log('======== Last 6 characters: ', domain.substr(domain.length - 6));
-    if (domain == undefined || domain.substr(domain.length - 6) !== 'usp.br') res.redirect('/auth/failed');
+    // let domain = req.user._json.hd;
+    // console.log('======== Callback --> Domain: ', domain);
+    // console.log('======== Last 6 characters: ', domain.substr(domain.length - 6));
+    // if (domain == undefined || domain.substr(domain.length - 6) !== 'usp.br') res.redirect('/auth/failed');
 
     // Gerar um token para as futuras requisições
     res.redirect('/auth/generatejwt');

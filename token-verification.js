@@ -15,12 +15,11 @@ async function verifyJWT(req, res, next) {
     req.body.userEmail = decoded.email;
     req.body.hostDomain = decoded.hd;
 
-    let domain = decoded.hd;
-    console.log('\n======== VerifyJWT --> Domain: ', domain);
-    console.log('======== Last 6 characters: ', domain.substr(domain.length - 6));
-
-    //Se os últimos 6 caracteres não forem usp.br
-    if (domain.substr(domain.length - 6) !== 'usp.br') res.redirect('/auth/failed');
+    // //Se os últimos 6 caracteres não forem usp.br
+    // let domain = decoded.hd;
+    // console.log('\n======== VerifyJWT --> Domain: ', domain);
+    // console.log('======== Last 6 characters: ', domain.substr(domain.length - 6));
+    // if (domain.substr(domain.length - 6) !== 'usp.br') res.redirect('/auth/failed');
 
     // console.log(decoded);
     next();
