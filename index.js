@@ -71,27 +71,27 @@ const svcUsuariosProxy = httpProxy('http://servico_usuario:8080');
 // const svcUsuariosProxy = httpProxy('http://localhost:3000');
 
 // ========= GAPSI ========
-app.get('/usuarios/gapsi', tokenVerification.verifyJWT, (req, res, next) => {
+app.get('/usuarios/gapsi', tokenVerification.verifyJWT, async (req, res, next) => {
   console.log('/usuarios/gapsi');
   svcUsuariosProxy(req, res, next);
 });
 
-app.get('/usuarios/gapsi/:instituto', tokenVerification.verifyJWT, (req, res, next) => {
+app.get('/usuarios/gapsi/:instituto', tokenVerification.verifyJWT, async (req, res, next) => {
   console.log('/usuarios/gapsi/:instituto');
   svcUsuariosProxy(req, res, next);
 });
 
-app.post('/usuarios/gapsi', tokenVerification.verifyJWT, (req, res, next) => {
+app.post('/usuarios/gapsi', tokenVerification.verifyJWT, async (req, res, next) => {
   console.log('/usuarios/gapsi');
   svcUsuariosProxy(req, res, next);
 });
 
-app.put('/usuarios/gapsi/:emailatendente', tokenVerification.verifyJWT, (req, res, next) => {
+app.put('/usuarios/gapsi/:emailatendente', tokenVerification.verifyJWT, async (req, res, next) => {
   console.log('/usuarios/gapsi/:emailatendente');
   svcUsuariosProxy(req, res, next);
 });
 
-app.delete('/usuarios/gapsi/:emailatendente', tokenVerification.verifyJWT, (req, res, next) => {
+app.delete('/usuarios/gapsi/:emailatendente', tokenVerification.verifyJWT, async (req, res, next) => {
   console.log('/usuarios/gapsi/:emailatendente');
   svcUsuariosProxy(req, res, next);
 });
