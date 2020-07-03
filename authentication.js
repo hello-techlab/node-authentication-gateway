@@ -65,7 +65,8 @@ authRouter.get('/google/callback',
     // if (domain == undefined || domain.substr(domain.length - 6) !== 'usp.br') res.redirect('/auth/failed');
 
     // Gerar um token para as futuras requisições
-    console.log('esse', req.user);
+    console.log('======================= req ========================', req, '\n\n\n\n\n\n\n\n\n\n\n\n\n\n');
+    console.log('======================= req.user ========================', req.user);
     res.redirect('/auth/generatejwt');
   }
 );
