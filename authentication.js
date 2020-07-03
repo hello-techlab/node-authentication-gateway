@@ -58,9 +58,10 @@ authRouter.get('/google/callback',
   passport.authenticate('google', { failureRedirect: '/auth/failed' }),
   function(req, res) {
     
-    console.log(req, res, 'google')
-    //Se o domínio não for USP, rejeitaremos a requisição de login
-    if (req.user._json.hd !== 'usp.br') res.redirect('/auth/failed');
+    //Se os últimos 6 caracteres não forem usp.br
+    let domain = req.user._json.hd;
+    console.log('domain', domain);
+    if (domain == undefined || domain.substr(domain.length - 6) !== 'usp.br') res.redirect('/auth/failed');
 
     // Gerar um token para as futuras requisições
     res.redirect('/auth/generatejwt');

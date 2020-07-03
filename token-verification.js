@@ -16,6 +16,7 @@ async function verifyJWT(req, res, next) {
     req.body.hostDomain = decoded.hd;
 
     let domain = decoded.hd;
+    console.log('======================================domain=============================', domain);
 
     //Se os últimos 6 caracteres não forem usp.br
     if (domain.substr(domain.length - 6) !== 'usp.br') res.redirect('/auth/failed');
