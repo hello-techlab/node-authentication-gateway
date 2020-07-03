@@ -76,6 +76,7 @@ app.get('/usuarios/gapsi', tokenVerification.verifyJWT, (req, res, next) => {
 });
 
 app.get('/usuarios/gapsi/:instituto', tokenVerification.verifyJWT, (req, res, next) => {
+  console.log('ta chegando aqui? diz que sim pfv!! :(');
   svcUsuariosProxy(req, res, next);
 });
 
