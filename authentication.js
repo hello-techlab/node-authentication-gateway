@@ -16,10 +16,19 @@ authRouter.get('/login',
 );
 
 authRouter.get('/info', tokenVerification.verifyJWT, (req, res, next) => {
+  const response = await axios({
+    method: 'get',
+    url: `http://servico_usuarios:8080/usuarios/aluno/${req.body.userId}`,
+    responseType: 'json'
+  });
+
+  console.log(response);
+
   res.status(200).json({
     id: req.body.userId,
     name: req.body.userName,
     email: req.body.userEmail,
+    response: response
   })
 });
 
