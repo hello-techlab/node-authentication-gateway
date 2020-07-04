@@ -118,6 +118,11 @@ app.delete('/usuarios/aluno/:idusuario', tokenVerification.verifyJWT, (req, res,
   svcUsuariosProxy(req, res, next);
 });
 
+// ========= INSTITUTO ========
+app.get('/usuarios/instituto', tokenVerification.verifyJWT, (req, res, next) => {
+  svcUsuariosProxy(req, res, next);
+});
+
 // ========= AGENDAMENTO ========
 
 const svcAgendamentosProxy = httpProxy('http://servico_agendamento:8080');
