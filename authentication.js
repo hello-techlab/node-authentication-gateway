@@ -15,7 +15,7 @@ authRouter.get('/login',
   passport.authenticate('google', { scope: ['profile', 'email'] })
 );
 
-authRouter.get('/info', tokenVerification.verifyJWT, (req, res, next) => {
+authRouter.get('/info', tokenVerification.verifyJWT, async (req, res, next) => {
   const response = await axios({
     method: 'get',
     url: `http://servico_usuarios:8080/usuarios/aluno/${req.body.userId}`,
