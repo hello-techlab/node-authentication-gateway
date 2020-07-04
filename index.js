@@ -130,6 +130,14 @@ app.put('/acolhimento/eventos/:instituto/:idevento', tokenVerification.verifyJWT
   svcAgendamentosProxy(req, res, next);
 });
 
+app.put('/acolhimento/eventos', tokenVerification.verifyJWT, (req, res, next) => {
+  svcAgendamentosProxy(req, res, next);
+});
+
+app.post('/acolhimento/eventos', tokenVerification.verifyJWT, (req, res, next) => {
+  svcAgendamentosProxy(req, res, next);
+});
+
 app.post('/acolhimento/eventos/:instituto', tokenVerification.verifyJWT, (req, res, next) => {
   svcAgendamentosProxy(req, res, next);
 });
