@@ -31,7 +31,7 @@ const authRoutes = require('./authentication');
 //Auth routes
 app.use('/auth', authRoutes);
 
-// ============================= Gateway ============================= 
+// ============================= Gateway =============================
 
 // ===== Serviço questionários =====
 const svcQuestionariosProxy = httpProxy('http://servico_questionarios:8080');
@@ -62,6 +62,10 @@ app.put('/questionarios/:name/:session_id/proxima', tokenVerification.verifyJWT,
 // ===== Serviço email =====
 const svcEmailProxy = httpProxy('http://servico_email:8080');
 app.post('/email/relatorio/enviar', tokenVerification.verifyJWT, (req, res, next) => {
+  svcEmailProxy(req, res, next);
+});
+
+app.post('/email/agendamento/enviar', tokenVerification.verifyJWT, (req, res, next) => {
   svcEmailProxy(req, res, next);
 });
 
@@ -161,6 +165,6 @@ app.delete('/acolhimento/token/:instituto', tokenVerification.verifyJWT, (req, r
   svcAgendamentosProxy(req, res, next);
 });
 
-// ============================= Server ============================= 
+// ============================= Server =============================
 const PORT = process.env.port | 8080;
 app.listen(PORT, () => console.log(`Listening on http://localhost:${PORT}`));
