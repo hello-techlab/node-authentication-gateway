@@ -39,5 +39,5 @@ clientSecret="segredoClienteGoogleOauth"
 callbackURL="http://suaURLseCallback"
 ```
 
-A URL de callback pode ser configurada [aqui](https://console.developers.google.com/apis/credentials?pli=1&project=seraphic-scarab-279918&folder=&organizationId=).
+A URL de callback pode ser configurada [nas configurações de credenciais das APIS Google da conta gmail criada para a Gapsi](https://console.developers.google.com/apis/credentials?pli=1&project=seraphic-scarab-279918&folder=&organizationId=).
 É necessário utilizar um domínio, não é possível adicionar apenas o IP de uma máquina.
