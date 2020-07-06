@@ -7,6 +7,12 @@ const axios = require('axios');
 
 const tokenVerification = require('./token-verification');
 
+authRouter.get('/test', tokenVerification.verifySuperUser, (req, res) => {
+  res.json({
+    msg: "se foi, foi. Se n foi n é super user"
+  });
+});
+
 authRouter.get('/failed', (req, res) => {
   res.sendStatus(401).json({message: 'You failed to authenticate. You do not have an USP email :('});
 });
