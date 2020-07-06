@@ -34,7 +34,7 @@ async function verifyJWT(req, res, next) {
 async function verifySuperUser(req, res, next) {
   const response = await axios({
     method: 'get',
-    url: `http://servico_usuarios:8080/usuarios/aluno/${req.user.id}`,
+    url: `http://servico_usuarios:8080/usuarios/aluno/${req.body.userId}`,
     responseType: 'json'
   });
 
