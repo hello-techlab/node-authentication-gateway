@@ -13,7 +13,6 @@ passport.use(new GoogleStrategy({
     clientID: process.env.clientID,
     clientSecret: process.env.clientSecret,
     callbackURL: process.env.callbackURL
-    // callbackURL: "http://localhost:8080/auth/google/callback" //For tests
   },
   function(acessToken, refreshToken, profile, done) {
     return done(null, profile);

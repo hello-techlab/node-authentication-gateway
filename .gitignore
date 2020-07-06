@@ -1,7 +1,7 @@
 node_modules/
+
+# Do not commit your secrets to repo!!!
 .env
-.env.examplef
-<<<<<<< HEAD
-=======
+.env.example
+
 deploy.sh
->>>>>>> b0593ffac3da36d65a9413cdb98b349aed2990a8

@@ -85,6 +85,7 @@ authRouter.get('/google/callback',
 authRouter.get('/generatejwt', (req, res, next) => {
   // console.log('\n\n\n=================================Dentro do generatejwt indo indo fazer o token', req.user);
 
+  console.log('/generatejwt of:', req.user);
   const token = jwt.sign({ 
     id: req.user._json.sub,
     name: req.user._json.name,
