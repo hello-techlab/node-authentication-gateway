@@ -22,20 +22,33 @@ authRouter.get('/login',
 );
 
 authRouter.get('/info', tokenVerification.verifyJWT, async (req, res, next) => {
-  const response = await axios({
-    method: 'get',
-    url: `http://servico_usuario:8080/usuarios/aluno/${req.body.userId}`,
-    responseType: 'json'
-  });
+  try {
+    const response = await axios({
+      method: 'get',
+      url: `http://servico_usuario:8080/usuarios/aluno/${req.body.userId}`,
+      responseType: 'json'
+    });
+  
+    console.log(response);
+  
+    res.status(200).json({
+      id: req.body.userId,
+      name: req.body.userName,
+      email: req.body.userEmail,
+      nivelacesso: response.data.nivelacesso
+    });
 
-  console.log(response);
+  } catch(err) {
+    
+    console.error(err);
+    res.status(200).json({
+      id: req.body.userId,
+      name: req.body.userName,
+      email: req.body.userEmail,
+    });
+  }
 
-  res.status(200).json({
-    id: req.body.userId,
-    name: req.body.userName,
-    email: req.body.userEmail,
-    nivelacesso: response.data.nivelacesso
-  })
+  
 });
 
 // authRouter.get('/signup', (req, res, next) => {

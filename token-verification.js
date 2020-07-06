@@ -34,9 +34,11 @@ async function verifyJWT(req, res, next) {
 async function verifySuperUser(req, res, next) {
   const response = await axios({
     method: 'get',
-    url: `http://servico_usuarios:8080/usuarios/aluno/${req.body.userId}`,
+    url: `http://servico_usuario:8080/usuarios/aluno/${req.body.userId}`,
     responseType: 'json'
   });
+
+  console.log(response);
 
   let isSuperUser = response.data.nivelacesso; 
 
