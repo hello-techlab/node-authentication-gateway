@@ -97,7 +97,7 @@ app.get('/auth/generatejwt', (req, res, next) => {
   const token = jwt.sign({ id: req.user.id }, process.env.SECRET, {
     expiresIn: 60*5 // expires in 5min
   });
-  //console.log(`Welcome, Mr ${req.user.displayName} of email: ${req.user._json.email} of domain ${req.user._json.hd} and id:${req.user.id}. Your token is: ${token}`);
+  console.log(`Welcome, Mr ${req.user.displayName} of email: ${req.user._json.email} of domain ${req.user._json.hd} and id:${req.user.id}. Your token is: ${token}`);
   res.status(200).json({auth: true, jwt: token, message: 'Use this token on next requests to identify which user is requesting'});
 });
 
@@ -107,5 +107,6 @@ app.get('/auth/logout', (req, res) => {
   res.json({ auth: false, token: null });
 });
 
-const PORT = 3000;
-app.listen(PORT, () => console.log(`Listening on http://localhost:${PORT}`));
+const PORT = process.env.PORT || 3000
+app.listen(PORT, '0.0.0.0')
+console.log(`Listening on http://localhost:${PORT}`)
