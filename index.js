@@ -13,6 +13,7 @@ var httpProxy = require('express-http-proxy');
 const cookieSession = require('cookie-session');
 const cookieParser = require('cookie-parser');
 require('./passport-setup');
+const url = require('url');
 
 app.use(helmet()); //Camada de proteção para requisições maliciosas
 app.use(cors());
@@ -81,7 +82,7 @@ app.get('/auth/failed', (req, res) => {
   res.send('You failed to authenticate');
 });
 
-app.get('/auth/google',
+app.get('/auth/info',
   passport.authenticate('google', { scope: ['profile', 'email'] })
 );
 
@@ -98,7 +99,14 @@ app.get('/auth/generatejwt', (req, res, next) => {
     expiresIn: 60*5 // expires in 5min
   });
   console.log(`Welcome, Mr ${req.user.displayName} of email: ${req.user._json.email} of domain ${req.user._json.hd} and id:${req.user.id}. Your token is: ${token}`);
-  res.status(200).json({auth: true, jwt: token, message: 'Use this token on next requests to identify which user is requesting'});
+  res.redirect(url.format({
+    pathname:"http://localhost:8000/loginpage",
+    query: {
+        "auth": true,
+        "token": token,
+        "message": 'Use this token on next requests to identify which user is requesting'
+      }
+  }));
 });
 
 app.get('/auth/logout', (req, res) => {
